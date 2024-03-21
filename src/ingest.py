@@ -1,13 +1,14 @@
 import json
 import sqlite3
+from typing import List, Union
 
 
-def load_json_file(fn):
+def load_json_file(fn: str) -> Union[List, None]:
     with open(fn, "r") as file:
         return json.load(file)
 
 
-def put_to_db(filename):
+def put_to_db(filename: str) -> None:
     db_name = "temp.db"
     con = sqlite3.connect(db_name)
     cur = con.cursor()

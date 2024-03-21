@@ -14,12 +14,12 @@ class Crawler:
         self.filename = output_filename
         self.data = []
 
-    def init_crawl(self):
+    def init_crawl(self) -> None:
         initial_page_html = self.request_page(self.start_url)
         self.process_page(initial_page_html)
         self.dump(self.filename)
 
-    def dump(self, filename):
+    def dump(self, filename: str) -> None:
         with open(filename, "w") as file:
             json.dump(self.data, file, indent=4)
             print(f"Exported data to {filename}")
@@ -67,14 +67,14 @@ class Crawler:
         return self.get_text(res, attr)
 
     @staticmethod
-    def transform_price_str(price: str) -> float:
+    def transform_price_str(price: str) -> Union[float, None]:
         price_clean = price.replace("€", "").replace(",", ".")
         try:
             return round(float(price_clean), 2)
         except ValueError:
             pass
 
-    def process_page(self, html: str):
+    def process_page(self, html: str) -> None:
         soup = self.prepare_bs_obj(html)
         self.process_listings(soup)
         next_page_url = self.parse_selector(
@@ -84,7 +84,7 @@ class Crawler:
             if next_page := self.request_page(next_page_url):
                 self.process_page(next_page)
 
-    def process_listings(self, soup):
+    def process_listings(self, soup: Tag) -> None:
         listings = soup.select(".products-grid > div")
         for listing in listings:
             price_str = self.parse_selector(tag=listing, sel="span.uk-price")
