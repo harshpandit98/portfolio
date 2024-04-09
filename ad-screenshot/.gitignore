@@ -1,3 +1,6 @@
 node_modules
 *.json
 *.png
+
+!package.json
+!package-lock.json
